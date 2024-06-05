@@ -1,12 +1,33 @@
 import { configureStore } from "@reduxjs/toolkit";
-import postSlice from "./features/postSlice";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import {
+  TypedUseSelectorHook,
+  useDispatch,
+  useSelector
+} from "react-redux";
+
+import {
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
+
+import { persistedReducer } from "./persist";
+import persistStore from "redux-persist/es/persistStore";
 
 export const store = configureStore({
-  reducer: {
-    posts: postSlice
-  }
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 })
+
+export const persistor = persistStore(store)
 
 export type RootState = ReturnType<typeof store.getState>;
 export const useAppDispatch: () => typeof store.dispatch = useDispatch;

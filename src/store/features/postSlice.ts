@@ -1,5 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
+export const POST_SLICE_NAME = "post"
+
 interface Post {
   id: string
   description: string
@@ -14,7 +16,7 @@ const initialState: PostState = {
 }
 
 const PostSlice = createSlice({
-  name: "cart",
+  name: POST_SLICE_NAME,
   initialState,
   reducers: {
     addPost: (state, action: PayloadAction<Post>) => {
